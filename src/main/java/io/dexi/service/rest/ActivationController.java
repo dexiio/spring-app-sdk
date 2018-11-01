@@ -1,29 +1,41 @@
 package io.dexi.service.rest;
 
-import io.dexi.client.DexiClientFactory;
-import io.dexi.service.config.ActivationConfig;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.dexi.client.DexiAuth;
 import io.dexi.service.exceptions.ActivationException;
 import io.dexi.service.handlers.ActivationHandler;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @ConditionalOnBean(ActivationHandler.class)
 @RestController
-@RequestMapping("/activations/")
-public class ActivationController {
+@RequestMapping("/dexi/activations/")
+public class ActivationController<T> {
 
     @Autowired
-    private ActivationHandler activationHandler;
+    private ActivationHandler<T> activationHandler;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @RequestMapping(value = "validate", method = RequestMethod.POST)
-    public void validateActivation(@RequestBody ActivationConfig activationConfig) throws ActivationException {
-        activationHandler.validate(activationConfig);
+    public void validateActivation(@RequestBody ObjectNode activationConfigJson) throws ActivationException {
+        T activationConfig = objectMapper.convertValue(activationConfigJson, activationHandler.getActivationConfigClass());
+        activationHandler.<T>validate(activationConfig);
+    }
+
+    @RequestMapping(value = "activate", method = RequestMethod.POST)
+    public void activate(@RequestBody ObjectNode activationConfigJson,
+                         @RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId) throws ActivationException {
+        T activationConfig = objectMapper.convertValue(activationConfigJson, activationHandler.getActivationConfigClass());
+        activationHandler.activate(activationId, activationConfig);
+    }
+
+    @RequestMapping(value = "deactivate", method = RequestMethod.POST)
+    public void deactivate(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId) throws ActivationException {
+        activationHandler.deactivate(activationId);
     }
 
 }

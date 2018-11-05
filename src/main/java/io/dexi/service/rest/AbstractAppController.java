@@ -6,7 +6,7 @@ import io.dexi.service.exceptions.UserErrorException;
 import io.dexi.service.handlers.ActivationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
-abstract public class AbstractDataController<T> {
+abstract public class AbstractAppController<T> {
 
     @Autowired
     private DexiClientFactory dexiClientFactory;

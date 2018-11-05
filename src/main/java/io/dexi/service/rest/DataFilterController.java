@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @ConditionalOnBean(DataFilterHandler.class)
 @RestController
 @RequestMapping("/dexi/data/filter/")
-public class DataFilterController<T, U> extends AbstractDataController<T> {
+public class DataFilterController<T, U> extends AbstractAppController<T> {
 
     @Autowired
     private DataFilterHandler<T, U> dataFilterHandler;

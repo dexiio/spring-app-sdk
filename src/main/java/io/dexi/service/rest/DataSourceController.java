@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @ConditionalOnBean(DataSourceHandler.class)
 @RestController
 @RequestMapping("/dexi/data/source/")
-public class DataSourceController<T, U> extends AbstractDataController<T> {
+public class DataSourceController<T, U> extends AbstractAppController<T> {
 
     @Autowired
     private DataSourceHandler<T, U> dataSourceHandler;
@@ -23,10 +23,10 @@ public class DataSourceController<T, U> extends AbstractDataController<T> {
     @RequestMapping(value = "read", method = RequestMethod.POST)
     public Result read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
-                       @RequestBody ObjectNode dataSourcePayloadJson) {
+                       @RequestBody ObjectNode componentConfigJson) {
         T activationConfig = requireConfig(activationId);
-        U dataSourcePayload = objectMapper.convertValue(dataSourcePayloadJson, dataSourceHandler.getDataSourcePayloadClass());
-        return dataSourceHandler.read(activationConfig, componentId, dataSourcePayload);
+        U componentConfig = objectMapper.convertValue(componentConfigJson, dataSourceHandler.getDataSourcePayloadClass());
+        return dataSourceHandler.read(activationConfig, componentId, componentConfig);
     }
 
 }

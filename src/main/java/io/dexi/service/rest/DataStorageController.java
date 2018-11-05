@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @ConditionalOnBean(DataStorageHandler.class)
 @RestController
 @RequestMapping("/dexi/data/storage/")
-public class DataStorageController<T, U extends DataStorageHandler.AbstractDataStoragePayload<?>> extends AbstractDataController<T> {
+public class DataStorageController<T, U extends DataStorageHandler.AbstractDataStoragePayload<?>> extends AbstractAppController<T> {
 
     @Autowired
     private DataStorageHandler<T, U> dataStorageHandler;

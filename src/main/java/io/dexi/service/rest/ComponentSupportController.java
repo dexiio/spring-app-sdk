@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/dexi/component/support/")
-public class ComponentSupportController<T extends ActivationConfig, U extends ComponentConfig> extends AbstractDataController<T> {
+public class ComponentSupportController<T extends ActivationConfig, U extends ComponentConfig> extends AbstractAppController<T> {
 
     @Autowired
     private ComponentConfigurationHandler<T, U> componentConfigurationHandler;

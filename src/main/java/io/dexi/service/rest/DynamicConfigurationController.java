@@ -22,7 +22,7 @@ public class DynamicConfigurationController<T, U> extends AbstractAppController<
     @Autowired
     private ObjectMapper objectMapper;
 
-    @RequestMapping(value = "dynamic-schema", method = RequestMethod.GET)
+    @RequestMapping(value = "read", method = RequestMethod.GET)
     public Schema read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
                        @RequestBody ObjectNode componentConfigJson) throws URISyntaxException {

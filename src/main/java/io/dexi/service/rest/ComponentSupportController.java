@@ -29,6 +29,4 @@ public class ComponentSupportController<T extends ActivationConfig, U extends Co
         componentConfigurationHandler.validate(activationConfig, componentId, componentConfig);
     }
 
-    // TODO: implement dynamic schema retrieval
-
 }

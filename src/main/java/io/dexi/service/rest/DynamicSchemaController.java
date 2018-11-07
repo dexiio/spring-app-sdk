@@ -20,7 +20,7 @@ public class DynamicSchemaController<T, U> extends AbstractAppController<T> {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @RequestMapping(value = "dynamic-schema", method = RequestMethod.GET)
+    @RequestMapping(value = "read", method = RequestMethod.GET)
     public Schema read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
                        @RequestBody ObjectNode componentConfigJson) {

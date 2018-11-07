@@ -4,7 +4,7 @@ import io.dexi.service.exceptions.UserErrorException;
 
 import java.util.regex.Pattern;
 
-abstract public class FileSystemComponentConfig implements ComponentConfig {
+abstract public class FileSystemComponentConfig {
 
     private static Pattern unixPathValidation = Pattern.compile("^(/([^/\0][^/\0]*)?)*/?$");
 

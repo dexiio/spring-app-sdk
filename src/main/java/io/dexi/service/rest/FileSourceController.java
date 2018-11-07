@@ -3,7 +3,6 @@ package io.dexi.service.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.dexi.client.DexiAuth;
-import io.dexi.service.config.ComponentConfig;
 import io.dexi.service.handlers.FileSourceHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 @ConditionalOnBean(FileSourceHandler.class)
 @RestController
 @RequestMapping("/dexi/file/source/")
-public class FileSourceController<T, U extends ComponentConfig> extends AbstractAppController<T> {
+public class FileSourceController<T, U> extends AbstractAppController<T> {
 
     @Autowired
     private FileSourceHandler<T, U> fileSourceHandler;

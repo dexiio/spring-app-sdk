@@ -3,8 +3,6 @@ package io.dexi.service.handlers;
 import io.dexi.service.Rows;
 
 public interface DataStorageHandler<T, U extends DataStorageHandler.AbstractDataStoragePayload<?>> {
-    Class<T> getActivationConfigClass();
-
     default Object write(String activationId, T activationConfig, String componentId, U dataStoragePayload) { return false; }
 
     Class<U> getDataStoragePayloadClass();

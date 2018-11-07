@@ -10,7 +10,6 @@ abstract public class FileSystemComponentConfig implements ComponentConfig {
 
     private String path;
 
-    @Override
     public void validate() {
         if (path == null || path.isEmpty()) {
             throw new UserErrorException("Path was empty");

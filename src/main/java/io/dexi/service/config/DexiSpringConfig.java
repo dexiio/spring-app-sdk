@@ -6,17 +6,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static io.dexi.config.DexiConfig.DEFAULT_BASE_URL;
+
 @Configuration
-public class DexiConfig {
+public class DexiSpringConfig {
 
-    @Value("${dexi.base_url:" + DexiClientFactory.DEFAULT_BASE_URL + "}")
+    @Value("${dexi.baseUrl:" + DEFAULT_BASE_URL + "}")
     private String dexiBaseUrl;
-
-    @Value("${dexi.apikey}")
-    private String dexiApiKey;
 
     @Value("${dexi.account}")
     private String dexiAccountId;
+
+    @Value("${dexi.apiKey}")
+    private String dexiApiKey;
 
     @Bean
     public DexiClientFactory dexiClient() {

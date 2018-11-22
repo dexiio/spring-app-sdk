@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 abstract public class AbstractAppController<T> {
 
     @Autowired
-    private DexiClientFactory dexiClientFactory;
+    private ActivationHandler<T> activationHandler;
 
     @Autowired
-    private ActivationHandler<T> activationHandler;
+    protected DexiClientFactory dexiClientFactory;
 
     protected T requireConfig(String activationId) {
         assert activationId != null && !activationId.isEmpty();

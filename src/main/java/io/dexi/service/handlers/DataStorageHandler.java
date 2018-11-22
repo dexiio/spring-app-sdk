@@ -2,11 +2,12 @@ package io.dexi.service.handlers;
 
 import io.dexi.service.Rows;
 
-public interface DataStorageHandler<T, U extends DataStorageHandler.AbstractDataStoragePayload<?>> {
-    default Object write(String activationId, T activationConfig, String componentId, U dataStoragePayload) { return false; }
+public interface DataStorageHandler<T, U> {
+    default Object write(String activationId, T activationConfig, String componentId, U componentConfig, Rows rows) { return false; }
 
-    Class<U> getDataStoragePayloadClass();
+    //Class<U> getDataStoragePayloadClass();
 
+    /*
     abstract class AbstractDataStoragePayload<V> {
         private V config;
 
@@ -28,4 +29,5 @@ public interface DataStorageHandler<T, U extends DataStorageHandler.AbstractData
             this.rows = rows;
         }
     }
+    */
 }

@@ -1,7 +1,6 @@
 package io.dexi.service.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.Rows;
@@ -38,9 +37,7 @@ public class DataStorageController<T, U> extends AbstractAppController<T> {
                       @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigString,
                       @RequestBody Rows rows) throws IOException {
         T activationConfig = requireConfig(activationId);
-
-        ObjectNode componentConfigJson = objectMapper.readValue(componentConfigString, ObjectNode.class);
-        U componentConfig = objectMapper.convertValue(componentConfigJson, componentConfigurationHandler.getComponentConfigClass());
+        U componentConfig = objectMapper.readValue(componentConfigString, componentConfigurationHandler.getComponentConfigClass());
 
         dataStorageHandler.write(activationId, activationConfig, componentId, componentConfig, rows);
     }

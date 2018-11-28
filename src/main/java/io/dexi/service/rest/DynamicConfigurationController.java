@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 
 @ConditionalOnBean(DynamicConfigurationHandler.class)
 @RestController
-@RequestMapping("/dexi/data/dynamic-configuration/")
+@RequestMapping("/dexi/data/dynamic-configuration")
 public class DynamicConfigurationController<T, U> extends AbstractAppController<T> {
 
     @Autowired
@@ -22,7 +22,7 @@ public class DynamicConfigurationController<T, U> extends AbstractAppController<
     @Autowired
     private ObjectMapper objectMapper;
 
-    @RequestMapping(value = "read", method = RequestMethod.GET)
+    @RequestMapping(value = "/read", method = RequestMethod.POST)
     public Schema read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
                        @RequestBody ObjectNode componentConfigJson) throws URISyntaxException {

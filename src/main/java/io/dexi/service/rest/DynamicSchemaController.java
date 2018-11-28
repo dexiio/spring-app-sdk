@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @ConditionalOnBean(DynamicSchemaHandler.class)
 @RestController
-@RequestMapping("/dexi/data/dynamic-schema/")
+@RequestMapping("/dexi/data/dynamic-schema")
 public class DynamicSchemaController<T, U> extends AbstractAppController<T> {
 
     @Autowired
@@ -20,7 +20,7 @@ public class DynamicSchemaController<T, U> extends AbstractAppController<T> {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @RequestMapping(value = "read", method = RequestMethod.GET)
+    @RequestMapping(value = "/read", method = RequestMethod.POST)
     public Schema read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
                        @RequestBody ObjectNode componentConfigJson) {

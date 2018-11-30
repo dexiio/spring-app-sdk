@@ -29,7 +29,11 @@ public class ComponentSupportController<T, U> extends AbstractAppController<T> {
                                                @RequestBody ObjectNode componentConfigJson) throws ComponentConfigurationException {
         T activationConfig = requireConfig(activationId);
         U componentConfig = objectMapper.convertValue(componentConfigJson, componentConfigurationHandler.getComponentConfigClass());
-        componentConfigurationHandler.validate(activationConfig, componentId, componentConfig);
+        try {
+            componentConfigurationHandler.validate(activationConfig, componentId, componentConfig);
+        } catch (Exception e) {
+            throw new ComponentConfigurationException("Invalid configuration provided", e);
+        }
     }
 
 }

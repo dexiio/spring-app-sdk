@@ -3,6 +3,7 @@ package io.dexi.service.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.dexi.client.DexiAuth;
+import io.dexi.service.exceptions.ComponentConfigurationException;
 import io.dexi.service.handlers.FileStorageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -30,10 +31,14 @@ public class FileStorageController<T, U> extends AbstractAppController<T> {
     public void write(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
                        @RequestBody ObjectNode fileStoragePayloadJson,
-                       HttpServletRequest request) {
+                       HttpServletRequest request) throws ComponentConfigurationException {
         T activationConfig = requireConfig(activationId);
-        U fileStoragePayload = objectMapper.convertValue(fileStoragePayloadJson, fileStorageHandler.getComponentConfigClass());
-        fileStorageHandler.write(activationConfig, fileStoragePayload, request);
+        try {
+            U fileStoragePayload = objectMapper.convertValue(fileStoragePayloadJson, fileStorageHandler.getComponentConfigClass());
+            fileStorageHandler.write(activationConfig, fileStoragePayload, request);
+        } catch (Exception e) {
+            throw new ComponentConfigurationException("Invalid configuration provided", e);
+        }
     }
 
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.Rows;
-import io.dexi.service.exceptions.ComponentConfigurationException;
 import io.dexi.service.handlers.ComponentConfigurationHandler;
 import io.dexi.service.handlers.DataStorageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +35,10 @@ public class DataStorageController<T, U> extends AbstractAppController<T> {
     public void write(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                       @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
                       @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigString,
-                      @RequestBody Rows rows) throws IOException, ComponentConfigurationException {
+                      @RequestBody Rows rows) throws IOException {
         T activationConfig = requireConfig(activationId);
-        try {
-            U componentConfig = objectMapper.readValue(componentConfigString, componentConfigurationHandler.getComponentConfigClass());
-            dataStorageHandler.write(activationId, activationConfig, componentId, componentConfig, rows);
-        } catch (Exception e) {
-            throw new ComponentConfigurationException("Invalid configuration provided", e);
-        }
+        U componentConfig = objectMapper.readValue(componentConfigString, componentConfigurationHandler.getComponentConfigClass());
+        dataStorageHandler.write(activationId, activationConfig, componentId, componentConfig, rows);
     }
 
 }

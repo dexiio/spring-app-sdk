@@ -3,7 +3,6 @@ package io.dexi.service.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.Result;
-import io.dexi.service.exceptions.ComponentConfigurationException;
 import io.dexi.service.handlers.DataSourceHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -25,14 +24,10 @@ public class DataSourceController<T, U> extends AbstractAppController<T> {
     @RequestMapping(value = "/read", method = RequestMethod.POST)
     public Result read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
-                       @RequestHeader("X-DexiIO-Config") String componentConfigJson) throws ComponentConfigurationException {
+                       @RequestHeader("X-DexiIO-Config") String componentConfigJson) throws IOException {
         T activationConfig = requireConfig(activationId);
-        try {
-            U componentConfig = objectMapper.convertValue(objectMapper.readTree(componentConfigJson), dataSourceHandler.getDataSourcePayloadClass());
-            return dataSourceHandler.read(activationConfig, componentId, componentConfig);
-        } catch (Exception e) {
-            throw new ComponentConfigurationException("Invalid configuration provided", e);
-        }
+        U componentConfig = objectMapper.convertValue(objectMapper.readTree(componentConfigJson), dataSourceHandler.getDataSourcePayloadClass());
+        return dataSourceHandler.read(activationConfig, componentId, componentConfig);
     }
 
 }

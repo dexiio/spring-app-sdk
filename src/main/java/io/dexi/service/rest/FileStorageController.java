@@ -31,14 +31,10 @@ public class FileStorageController<T, U> extends AbstractAppController<T> {
     public void write(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
                        @RequestBody ObjectNode fileStoragePayloadJson,
-                       HttpServletRequest request) throws ComponentConfigurationException {
+                       HttpServletRequest request) {
         T activationConfig = requireConfig(activationId);
-        try {
-            U fileStoragePayload = objectMapper.convertValue(fileStoragePayloadJson, fileStorageHandler.getComponentConfigClass());
-            fileStorageHandler.write(activationConfig, fileStoragePayload, request);
-        } catch (Exception e) {
-            throw new ComponentConfigurationException("Invalid configuration provided", e);
-        }
+        U fileStoragePayload = objectMapper.convertValue(fileStoragePayloadJson, fileStorageHandler.getComponentConfigClass());
+        fileStorageHandler.write(activationConfig, fileStoragePayload, request);
     }
 
 }

@@ -23,7 +23,7 @@ public class FileSourceController<T, U> extends AbstractAppController<T> {
 
     @RequestMapping(value = "read", method = RequestMethod.POST)
     public void read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
-                     @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
+                     @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                      @RequestBody ObjectNode fileSourcePayloadJson,
                      HttpServletResponse response) {
         T activationConfig = requireConfig(activationId);

@@ -22,11 +22,11 @@ public class DataFilterController<T, U> extends AbstractAppController<T> {
 
     @RequestMapping(value = "invoke", method = RequestMethod.POST)
     public Result filter(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
-                       @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
+                       @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                        @RequestBody ObjectNode dataSourcePayloadJson) {
         T activationConfig = requireConfig(activationId);
         U dataSourcePayload = objectMapper.convertValue(dataSourcePayloadJson, dataFilterHandler.getDataFilterPayloadClass());
-        return dataFilterHandler.filter(activationConfig, componentId, dataSourcePayload);
+        return dataFilterHandler.filter(activationConfig, componentName, dataSourcePayload);
     }
 
 }

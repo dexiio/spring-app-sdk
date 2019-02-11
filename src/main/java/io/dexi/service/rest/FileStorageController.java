@@ -28,7 +28,7 @@ public class FileStorageController<T, U> extends AbstractAppController<T> {
     // TODO: make more generic fix by sub-classing appropriate Jackson converter used by okhttp
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void write(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
-                       @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
+                       @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                        @RequestBody ObjectNode fileStoragePayloadJson,
                        HttpServletRequest request) {
         T activationConfig = requireConfig(activationId);

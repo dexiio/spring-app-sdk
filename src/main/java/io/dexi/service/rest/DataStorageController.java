@@ -33,13 +33,13 @@ public class DataStorageController<T, U> extends AbstractAppController<T> {
     // TODO: make more generic fix by sub-classing appropriate Jackson converter used by okhttp
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void write(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
-                      @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
+                      @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                       @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigString,
                       @RequestBody Rows rows) throws IOException {
         T activationConfig = requireConfig(activationId);
         U componentConfig = objectMapper.readValue(componentConfigString, componentConfigurationHandler.getComponentConfigClass());
 
-        dataStorageHandler.write(activationId, activationConfig, componentId, componentConfig, rows);
+        dataStorageHandler.write(activationId, activationConfig, componentName, componentConfig, rows);
     }
 
 }

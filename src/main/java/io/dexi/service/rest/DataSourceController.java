@@ -23,11 +23,11 @@ public class DataSourceController<T, U> extends AbstractAppController<T> {
 
     @RequestMapping(value = "/read", method = RequestMethod.POST)
     public Result read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
-                       @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
+                       @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                        @RequestHeader("X-DexiIO-Config") String componentConfigJson) throws IOException {
         T activationConfig = requireConfig(activationId);
         U componentConfig = objectMapper.convertValue(objectMapper.readTree(componentConfigJson), dataSourceHandler.getDataSourcePayloadClass());
-        return dataSourceHandler.read(activationConfig, componentId, componentConfig);
+        return dataSourceHandler.read(activationConfig, componentName, componentConfig);
     }
 
 }

@@ -24,11 +24,11 @@ public class DynamicConfigurationController<T, U> extends AbstractAppController<
 
     @RequestMapping(value = "/read", method = RequestMethod.POST)
     public Schema read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
-                       @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
+                       @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                        @RequestBody ObjectNode componentConfigJson) throws URISyntaxException {
         T activationConfig = requireConfig(activationId);
         U componentConfig = objectMapper.convertValue(componentConfigJson, dynamicConfigurationHandler.getDynamicConfigurationPayloadClass());
-        return dynamicConfigurationHandler.getConfiguration(activationConfig, componentId, componentConfig);
+        return dynamicConfigurationHandler.getConfiguration(activationConfig, componentName, componentConfig);
     }
 
 }

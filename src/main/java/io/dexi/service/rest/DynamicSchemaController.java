@@ -22,11 +22,11 @@ public class DynamicSchemaController<T, U> extends AbstractAppController<T> {
 
     @RequestMapping(value = "/read", method = RequestMethod.POST)
     public Schema read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
-                       @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentId,
+                       @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                        @RequestBody ObjectNode componentConfigJson) {
         T activationConfig = requireConfig(activationId);
         U componentConfig = objectMapper.convertValue(componentConfigJson, dynamicSchemaHandler.getDynamicSchemaPayloadClass());
-        return dynamicSchemaHandler.getSchema(activationConfig, componentId, componentConfig);
+        return dynamicSchemaHandler.getSchema(activationConfig, componentName, componentConfig);
     }
 
 }

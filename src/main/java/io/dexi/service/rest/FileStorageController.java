@@ -1,8 +1,8 @@
 package io.dexi.service.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.dexi.client.DexiAuth;
+import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.handlers.FileStorageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @ConditionalOnBean(FileStorageHandler.class)
 @RestController
@@ -28,11 +29,11 @@ public class FileStorageController<T, U> extends AbstractAppController<T> {
     // TODO: make more generic fix by sub-classing appropriate Jackson converter used by okhttp
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void write(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
-                       @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
-                       @RequestBody ObjectNode fileStoragePayloadJson,
-                       HttpServletRequest request) {
+                      @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
+                      @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson,
+                      HttpServletRequest request) throws IOException {
         T activationConfig = requireConfig(activationId);
-        U fileStoragePayload = objectMapper.convertValue(fileStoragePayloadJson, fileStorageHandler.getComponentConfigClass());
+        U fileStoragePayload = objectMapper.readValue(componentConfigJson, fileStorageHandler.getComponentConfigClass());
         fileStorageHandler.write(activationConfig, fileStoragePayload, request);
     }
 

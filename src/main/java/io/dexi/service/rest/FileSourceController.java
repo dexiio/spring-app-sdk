@@ -3,12 +3,14 @@ package io.dexi.service.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.dexi.client.DexiAuth;
+import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.handlers.FileSourceHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @ConditionalOnBean(FileSourceHandler.class)
 @RestController
@@ -24,10 +26,10 @@ public class FileSourceController<T, U> extends AbstractAppController<T> {
     @RequestMapping(value = "read", method = RequestMethod.POST)
     public void read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                      @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
-                     @RequestBody ObjectNode fileSourcePayloadJson,
-                     HttpServletResponse response) {
+                     @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson,
+                     HttpServletResponse response) throws IOException {
         T activationConfig = requireConfig(activationId);
-        U fileSourcePayload = objectMapper.convertValue(fileSourcePayloadJson, fileSourceHandler.getComponentConfigClass());
+        U fileSourcePayload = objectMapper.readValue(componentConfigJson, fileSourceHandler.getComponentConfigClass());
         fileSourceHandler.read(activationConfig, fileSourcePayload, response);
     }
 

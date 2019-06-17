@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 @ConditionalOnBean(DynamicConfigurationHandler.class)
@@ -28,9 +29,9 @@ public class DynamicConfigurationController<T, U> extends AbstractAppController<
     @RequestMapping(value = "/read", method = RequestMethod.POST)
     public Schema read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
-                       @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) throws URISyntaxException {
+                       @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) throws URISyntaxException, IOException {
         T activationConfig = requireConfig(activationId);
-        U componentConfig = objectMapper.convertValue(componentConfigJson, dynamicConfigurationHandler.getDynamicConfigurationPayloadClass());
+        U componentConfig = objectMapper.readValue(componentConfigJson, dynamicConfigurationHandler.getDynamicConfigurationPayloadClass());
         return dynamicConfigurationHandler.getConfiguration(activationConfig, componentName, componentConfig);
     }
 

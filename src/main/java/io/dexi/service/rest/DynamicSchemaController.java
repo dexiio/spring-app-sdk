@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @ConditionalOnBean(DynamicSchemaHandler.class)
 @RestController
 @RequestMapping("/dexi/data/dynamic-schema")
@@ -26,9 +28,9 @@ public class DynamicSchemaController<T, U> extends AbstractAppController<T> {
     @RequestMapping(value = "/read", method = RequestMethod.POST)
     public Schema read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
-                       @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) {
+                       @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) throws IOException {
         T activationConfig = requireConfig(activationId);
-        U componentConfig = objectMapper.convertValue(componentConfigJson, dynamicSchemaHandler.getDynamicSchemaPayloadClass());
+        U componentConfig = objectMapper.readValue(componentConfigJson, dynamicSchemaHandler.getDynamicSchemaPayloadClass());
         return dynamicSchemaHandler.getSchema(activationConfig, componentName, componentConfig);
     }
 

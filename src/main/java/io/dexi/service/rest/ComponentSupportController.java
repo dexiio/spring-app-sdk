@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/dexi/component/support/")
 public class ComponentSupportController<T, U> extends AbstractAppController<T> {
@@ -26,9 +28,9 @@ public class ComponentSupportController<T, U> extends AbstractAppController<T> {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void validateComponentConfiguration(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                                                @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
-                                               @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) throws ComponentConfigurationException {
+                                               @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) throws ComponentConfigurationException, IOException {
         T activationConfig = requireConfig(activationId);
-        U componentConfig = objectMapper.convertValue(componentConfigJson, componentConfigurationHandler.getComponentConfigClass());
+        U componentConfig = objectMapper.readValue(componentConfigJson, componentConfigurationHandler.getComponentConfigClass());
         componentConfigurationHandler.validate(activationConfig, componentName, componentConfig);
     }
 

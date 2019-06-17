@@ -1,13 +1,16 @@
 package io.dexi.service.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.dexi.client.DexiAuth;
+import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.Schema;
 import io.dexi.service.handlers.DynamicConfigurationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URISyntaxException;
 
@@ -25,7 +28,7 @@ public class DynamicConfigurationController<T, U> extends AbstractAppController<
     @RequestMapping(value = "/read", method = RequestMethod.POST)
     public Schema read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
-                       @RequestBody ObjectNode componentConfigJson) throws URISyntaxException {
+                       @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) throws URISyntaxException {
         T activationConfig = requireConfig(activationId);
         U componentConfig = objectMapper.convertValue(componentConfigJson, dynamicConfigurationHandler.getDynamicConfigurationPayloadClass());
         return dynamicConfigurationHandler.getConfiguration(activationConfig, componentName, componentConfig);

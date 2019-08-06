@@ -7,5 +7,5 @@ import java.net.URISyntaxException;
 public interface DynamicConfigurationHandler<T, U> {
     default Schema getConfiguration(T activationConfig, String componentName, U shemaReadPayload) throws URISyntaxException { return null; }
 
-    Class<U> getDynamicConfigurationPayloadClass();
+    Class<U> getDynamicConfigurationPayloadClass(String componentName);
 }

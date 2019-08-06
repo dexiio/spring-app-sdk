@@ -5,5 +5,5 @@ import io.dexi.service.exceptions.ComponentConfigurationException;
 public interface ComponentConfigurationHandler<T, U> {
     default void validate(T activationConfig, String componentName, U componentConfig) throws ComponentConfigurationException {}
 
-    Class<U> getComponentConfigClass();
+    Class<? extends U> getComponentConfigClass(String componentName);
 }

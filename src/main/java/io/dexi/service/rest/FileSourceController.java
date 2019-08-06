@@ -29,7 +29,7 @@ public class FileSourceController<T, U> extends AbstractAppController<T> {
                      @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson,
                      HttpServletResponse response) throws IOException {
         T activationConfig = requireConfig(activationId);
-        U fileSourcePayload = objectMapper.readValue(componentConfigJson, fileSourceHandler.getComponentConfigClass());
+        U fileSourcePayload = objectMapper.readValue(componentConfigJson, fileSourceHandler.getComponentConfigClass(componentName));
         fileSourceHandler.read(activationConfig, fileSourcePayload, response);
     }
 

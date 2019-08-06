@@ -33,7 +33,7 @@ public class FileStorageController<T, U> extends AbstractAppController<T> {
                       @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson,
                       HttpServletRequest request) throws IOException {
         T activationConfig = requireConfig(activationId);
-        U fileStoragePayload = objectMapper.readValue(componentConfigJson, fileStorageHandler.getComponentConfigClass());
+        U fileStoragePayload = objectMapper.readValue(componentConfigJson, fileStorageHandler.getComponentConfigClass(componentName));
         fileStorageHandler.write(activationConfig, fileStoragePayload, request);
     }
 

@@ -31,7 +31,7 @@ public class DynamicConfigurationController<T, U> extends AbstractAppController<
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                        @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) throws URISyntaxException, IOException {
         T activationConfig = requireConfig(activationId);
-        U componentConfig = objectMapper.readValue(componentConfigJson, dynamicConfigurationHandler.getDynamicConfigurationPayloadClass());
+        U componentConfig = objectMapper.readValue(componentConfigJson, dynamicConfigurationHandler.getDynamicConfigurationPayloadClass(componentName));
         return dynamicConfigurationHandler.getConfiguration(activationConfig, componentName, componentConfig);
     }
 

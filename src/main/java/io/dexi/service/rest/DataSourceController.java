@@ -27,7 +27,7 @@ public class DataSourceController<T, U> extends AbstractAppController<T> {
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                        @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) throws IOException {
         T activationConfig = requireConfig(activationId);
-        U componentConfig = objectMapper.convertValue(objectMapper.readTree(componentConfigJson), dataSourceHandler.getDataSourcePayloadClass());
+        U componentConfig = objectMapper.convertValue(objectMapper.readTree(componentConfigJson), dataSourceHandler.getDataSourcePayloadClass(componentName));
         return dataSourceHandler.read(activationConfig, componentName, componentConfig);
     }
 

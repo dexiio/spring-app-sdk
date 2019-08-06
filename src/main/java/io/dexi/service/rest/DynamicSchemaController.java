@@ -30,7 +30,7 @@ public class DynamicSchemaController<T, U> extends AbstractAppController<T> {
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                        @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) throws IOException {
         T activationConfig = requireConfig(activationId);
-        U componentConfig = objectMapper.readValue(componentConfigJson, dynamicSchemaHandler.getDynamicSchemaPayloadClass());
+        U componentConfig = objectMapper.readValue(componentConfigJson, dynamicSchemaHandler.getDynamicSchemaPayloadClass(componentName));
         return dynamicSchemaHandler.getSchema(activationConfig, componentName, componentConfig);
     }
 

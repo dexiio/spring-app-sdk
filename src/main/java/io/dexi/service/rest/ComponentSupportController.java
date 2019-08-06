@@ -30,7 +30,7 @@ public class ComponentSupportController<T, U> extends AbstractAppController<T> {
                                                @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                                                @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) throws ComponentConfigurationException, IOException {
         T activationConfig = requireConfig(activationId);
-        U componentConfig = objectMapper.readValue(componentConfigJson, componentConfigurationHandler.getComponentConfigClass());
+        U componentConfig = objectMapper.readValue(componentConfigJson, componentConfigurationHandler.getComponentConfigClass(componentName));
         componentConfigurationHandler.validate(activationConfig, componentName, componentConfig);
     }
 

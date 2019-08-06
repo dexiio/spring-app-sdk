@@ -37,7 +37,7 @@ public class DataStorageController<T, U> extends AbstractAppController<T> {
                       @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigString,
                       @RequestBody Rows rows) throws IOException {
         T activationConfig = requireConfig(activationId);
-        U componentConfig = objectMapper.readValue(componentConfigString, componentConfigurationHandler.getComponentConfigClass());
+        U componentConfig = objectMapper.readValue(componentConfigString, componentConfigurationHandler.getComponentConfigClass(componentName));
 
         dataStorageHandler.write(activationId, activationConfig, componentName, componentConfig, rows);
     }

@@ -31,7 +31,7 @@ public class DataFilterController<T, U> extends AbstractAppController<T> {
                        @RequestBody Rows rows) throws IOException {
         T activationConfig = requireConfig(activationId);
 
-        U dataSourcePayload = objectMapper.readValue(componentConfigJson, dataFilterHandler.getDataFilterPayloadClass());
+        U dataSourcePayload = objectMapper.readValue(componentConfigJson, dataFilterHandler.getDataFilterPayloadClass(componentName));
         return dataFilterHandler.filter(activationConfig, componentName, dataSourcePayload, rows);
     }
 

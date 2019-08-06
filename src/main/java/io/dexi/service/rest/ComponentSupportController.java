@@ -1,8 +1,8 @@
 package io.dexi.service.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.dexi.client.DexiAuth;
-import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.exceptions.ComponentConfigurationException;
 import io.dexi.service.handlers.ComponentConfigurationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,9 @@ public class ComponentSupportController<T, U> extends AbstractAppController<T> {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void validateComponentConfiguration(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                                                @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
-                                               @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) throws ComponentConfigurationException, IOException {
+                                               @RequestBody ObjectNode componentConfigJson) throws ComponentConfigurationException {
         T activationConfig = requireConfig(activationId);
-        U componentConfig = objectMapper.readValue(componentConfigJson, componentConfigurationHandler.getComponentConfigClass(componentName));
+        U componentConfig = objectMapper.convertValue(componentConfigJson, componentConfigurationHandler.getComponentConfigClass(componentName));
         componentConfigurationHandler.validate(activationConfig, componentName, componentConfig);
     }
 

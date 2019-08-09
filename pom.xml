@@ -14,6 +14,28 @@
         <version>2.0.1.RELEASE</version>
     </parent>
 
+    <properties>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <resource.delimiter>@</resource.delimiter>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+    </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <name>Releases</name>
+            <url>https://dexi.jfrog.io/dexi/libs-release</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Snapshots</name>
+            <url>https://dexi.jfrog.io/dexi/libs-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <dependencies>
 
         <!-- DEXI: -->

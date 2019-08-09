@@ -6,7 +6,7 @@
 
     <groupId>io.dexi</groupId>
     <artifactId>spring-app-sdk</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

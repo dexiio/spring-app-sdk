@@ -10,7 +10,9 @@ import java.net.URISyntaxException;
 
 public class DexiConfigWrapper extends PropertySource<URI> {
 
-    static {
+    public DexiConfigWrapper() {
+        super("dexi");
+
         try {
             DexiConfig.load();
         } catch (ConfigurationException e) {
@@ -20,10 +22,6 @@ public class DexiConfigWrapper extends PropertySource<URI> {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-    }
-
-    public DexiConfigWrapper() {
-        super("dexi");
     }
 
     @Override

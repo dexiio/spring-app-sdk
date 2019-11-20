@@ -19,6 +19,9 @@ abstract public class AbstractAppController<T> {
 
         try {
             final T activationConfig = dexiClientFactory.getActivationConfig(activationId, activationHandler.getActivationConfigClass());
+            if (activationConfig == null) {
+                throw new UserErrorException("Could not find activation configuration for activation id: " + activationId);
+            }
             return activationConfig;
         } catch (DexiClientException e) {
             throw new UserErrorException("Could not get configuration for app activation", e);

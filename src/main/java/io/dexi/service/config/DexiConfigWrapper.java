@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+
 public class DexiConfigWrapper extends PropertySource<URI> {
 
     public DexiConfigWrapper() {
@@ -15,6 +16,7 @@ public class DexiConfigWrapper extends PropertySource<URI> {
 
         try {
             DexiConfig.load();
+
         } catch (ConfigurationException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {

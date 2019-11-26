@@ -6,7 +6,7 @@
 
     <groupId>io.dexi</groupId>
     <artifactId>spring-app-sdk</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -49,6 +49,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
 
     </dependencies>

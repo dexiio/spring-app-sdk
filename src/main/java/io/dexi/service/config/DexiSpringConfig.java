@@ -13,7 +13,7 @@ public class DexiSpringConfig {
     @Autowired
     private ConfigurableEnvironment environment;
 
-    @Bean
+    @Bean("dexiConfigWrapper")
     public DexiConfigWrapper dexiConfigWrapper() {
         DexiConfigWrapper dexiConfigWrapper = new DexiConfigWrapper();
         MutablePropertySources propertySources = environment.getPropertySources();

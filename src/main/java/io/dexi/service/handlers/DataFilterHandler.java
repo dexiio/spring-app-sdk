@@ -4,7 +4,7 @@ import io.dexi.service.Result;
 import io.dexi.service.Rows;
 
 public interface DataFilterHandler<T, U> {
-    default Result filter(T activationConfig, String componentName, U componentConfig, Rows rows) { return null; }
+    Result filter(T activationConfig, String componentName, U componentConfig, Rows rows);
 
     Class<U> getDataFilterPayloadClass(String componentName);
 }

@@ -1,9 +1,12 @@
 package io.dexi.service.handlers;
 
-import io.dexi.service.Result;
+import io.dexi.service.utils.JsonResultStream;
+import io.dexi.service.utils.ResultStream;
+
+import java.io.IOException;
 
 public interface DataSourceHandler<T, U> {
-    default Result read(T activationConfig, String componentName, U dataSourcePayload) { return null; }
+    void read(T activationConfig, String componentName, U componentConfig, ResultStream resultStream) throws IOException;
 
-    Class<U> getDataSourcePayloadClass(String componentName);
+    Class<U> getComponentConfigClass(String componentName);
 }

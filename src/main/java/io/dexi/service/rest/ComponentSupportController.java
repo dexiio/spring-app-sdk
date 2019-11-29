@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.exceptions.ComponentConfigurationException;
+import io.dexi.service.handlers.AppContext;
 import io.dexi.service.handlers.ComponentConfigurationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class ComponentSupportController<T, U> extends AbstractAppController<T> {
                                                @RequestBody ObjectNode componentConfigJson) throws ComponentConfigurationException {
         T activationConfig = requireConfig(activationId);
         U componentConfig = objectMapper.convertValue(componentConfigJson, componentConfigurationHandler.getComponentConfigClass(componentName));
-        componentConfigurationHandler.validate(activationId, activationConfig, componentName, componentConfig);
+        componentConfigurationHandler.validate(new AppContext<>(activationId, activationConfig, componentName, componentConfig));
     }
 
 }

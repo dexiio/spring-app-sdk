@@ -14,14 +14,13 @@ public interface DataSourceHandler<T, U> {
     /**
      * Method that gets invoked whenever a data-source component is invoked from dexi.
      *
-     * @param activationId the ID of the users app activation
-     * @param activationConfig the activation configuration DTO
-     * @param componentName the name of the component being used as defined in your dexi.yml
-     * @param componentConfig the component configuration DTO
+     * @param ctxt Context information about the current activation and component configuration
      * @param resultStream object for writing results to. Provided to support streaming output
+     * @param offset The offset for this result set. We read rows in batches to avoid long-running connections.
+     * @param batchSize the size of the batch to retrieve (limit)
      * @throws IOException if reading fails
      */
-    void read(String activationId, T activationConfig, String componentName, U componentConfig, ResultStream resultStream) throws IOException;
+    void read(AppContext<T,U> ctxt, int offset, int batchSize, ResultStream resultStream) throws IOException;
 
     /**
      * Get the component configuration class. Is used for (de)serialization

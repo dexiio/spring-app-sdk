@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
+import io.dexi.service.handlers.AppContext;
 import io.dexi.service.handlers.ComponentConfigurationHandler;
 import io.dexi.service.handlers.DataStorageHandler;
 import io.dexi.service.utils.JsonRowStream;
@@ -41,7 +42,7 @@ public class DataStorageController<T, U> extends AbstractAppController<T> {
         T activationConfig = requireConfig(activationId);
         U componentConfig = objectMapper.readValue(componentConfigString, componentConfigurationHandler.getComponentConfigClass(componentName));
         try (JsonRowStream rowStream = new JsonRowStream(jsonFactory, objectMapper, request.getInputStream())) {
-            dataStorageHandler.write(activationId, activationConfig, componentName, componentConfig, rowStream);
+            dataStorageHandler.write(new AppContext<>(activationId, activationConfig, componentName, componentConfig), rowStream);
         }
 
     }

@@ -6,6 +6,7 @@ import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.Result;
 import io.dexi.service.Rows;
+import io.dexi.service.handlers.AppContext;
 import io.dexi.service.handlers.DataFilterHandler;
 import io.dexi.service.utils.JsonResultStream;
 import io.dexi.service.utils.JsonRowStream;
@@ -42,7 +43,7 @@ public class DataFilterController<T, U> extends AbstractAppController<T> {
         U componentConfig = objectMapper.readValue(componentConfigJson, dataFilterHandler.getComponentConfigClass(componentName));
         try (JsonRowStream rowStream = new JsonRowStream(jsonFactory, objectMapper, request.getInputStream())) {
             try (JsonResultStream resultStream = new JsonResultStream(jsonFactory, response.getOutputStream())) {
-                dataFilterHandler.filter(activationId, activationConfig, componentName, componentConfig, rowStream, resultStream);
+                dataFilterHandler.filter(new AppContext<>(activationId, activationConfig, componentName, componentConfig), rowStream, resultStream);
             }
         }
     }

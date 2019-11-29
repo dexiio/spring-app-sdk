@@ -14,14 +14,11 @@ public interface DataFilterHandler<T, U> {
     /**
      * Method that is invoked for all data-filter components for belonging to this app.
      *
-     * @param activationId the ID of the users app activation
-     * @param activationConfig the activation configuration DTO
-     * @param componentName the name of the component being used as defined in your dexi.yml
-     * @param componentConfig the component configuration DTO
+     * @param ctxt Context information about the current activation and component configuration
      * @param inputs a stream of inputs coming from dexi
      * @param outputs a stream of outputs from your app.
      */
-    void filter(String activationId, T activationConfig, String componentName, U componentConfig, RowStream inputs, ResultStream outputs);
+    void filter(AppContext<T,U> ctxt, RowStream inputs, ResultStream outputs);
 
     /**
      * Get the component configuration class. Is used for (de)serialization

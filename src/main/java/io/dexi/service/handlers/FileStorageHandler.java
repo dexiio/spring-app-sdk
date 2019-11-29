@@ -16,13 +16,10 @@ public interface FileStorageHandler<T, U> {
      * You read the file content from the request (request.getInputStream()) and also have the content-type
      * available from the headers whenever possible.
      *
-     * @param activationId the ID of the users app activation
-     * @param activationConfig the activation configuration DTO
-     * @param componentName the name of the component being used as defined in your dexi.yml
-     * @param componentConfig the component configuration DTO
+     * @param ctxt Context information about the current activation and component configuration
      * @param request the raw HTTP request - to read the file content and headers from
      */
-    void write(String activationId, T activationConfig, String componentName, U componentConfig, HttpServletRequest request);
+    void write(AppContext<T,U> ctxt, HttpServletRequest request);
 
     /**
      * Get the component configuration class. Is used for (de)serialization

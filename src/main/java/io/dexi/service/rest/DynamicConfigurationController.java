@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.Schema;
+import io.dexi.service.handlers.AppContext;
 import io.dexi.service.handlers.DynamicConfigurationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -29,7 +30,7 @@ public class DynamicConfigurationController<T, U> extends AbstractAppController<
                        @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) throws URISyntaxException, IOException {
         T activationConfig = requireConfig(activationId);
         U componentConfig = objectMapper.readValue(componentConfigJson, dynamicConfigurationHandler.getComponentConfigClass(componentName));
-        return dynamicConfigurationHandler.getConfiguration(activationId, activationConfig, componentName, componentConfig);
+        return dynamicConfigurationHandler.getConfiguration(new AppContext<>(activationId, activationConfig, componentName, componentConfig));
     }
 
 }

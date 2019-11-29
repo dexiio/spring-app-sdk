@@ -14,13 +14,10 @@ public interface DynamicSchemaHandler<T, U> {
      * a JSON schema-like structure which is used within dexi. Implementing this will allow for dynamic
      * schemas based on configuration.
      *
-     * @param activationId the ID of the users app activation
-     * @param activationConfig the activation configuration DTO
-     * @param componentName the name of the component being used as defined in your dexi.yml
-     * @param componentConfig the component configuration DTO
+     * @param ctxt Context information about the current activation and component configuration
      * @return the schema based on the configuration provided.
      */
-    Schema getSchema(String activationId, T activationConfig, String componentName, U componentConfig);
+    Schema getSchema(AppContext<T,U> ctxt);
 
     /**
      * Get the component configuration class. Is used for (de)serialization

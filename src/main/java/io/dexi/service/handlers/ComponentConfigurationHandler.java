@@ -12,12 +12,13 @@ public interface ComponentConfigurationHandler<T, U> {
     /**
      * Is invoked whenever the user uses a component and clicks "Test configuration" for a component.
      *
+     * @param activationId the ID of the users app activation
      * @param activationConfig the activation configuration DTO
      * @param componentName the name of the component as defined in your dexi.yml file
      * @param componentConfig the component configuration DTO
      * @throws ComponentConfigurationException throws exception if configuration is invalid
      */
-    void validate(T activationConfig, String componentName, U componentConfig) throws ComponentConfigurationException;
+    void validate(String activationId, T activationConfig, String componentName, U componentConfig) throws ComponentConfigurationException;
 
     /**
      * Returns class for component configuration DTO. Is used for (de)serialization

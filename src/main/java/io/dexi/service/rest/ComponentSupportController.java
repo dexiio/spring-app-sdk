@@ -28,7 +28,7 @@ public class ComponentSupportController<T, U> extends AbstractAppController<T> {
                                                @RequestBody ObjectNode componentConfigJson) throws ComponentConfigurationException {
         T activationConfig = requireConfig(activationId);
         U componentConfig = objectMapper.convertValue(componentConfigJson, componentConfigurationHandler.getComponentConfigClass(componentName));
-        componentConfigurationHandler.validate(activationConfig, componentName, componentConfig);
+        componentConfigurationHandler.validate(activationId, activationConfig, componentName, componentConfig);
     }
 
 }

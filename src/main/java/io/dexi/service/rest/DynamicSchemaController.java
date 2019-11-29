@@ -7,10 +7,7 @@ import io.dexi.service.Schema;
 import io.dexi.service.handlers.DynamicSchemaHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -25,13 +22,13 @@ public class DynamicSchemaController<T, U> extends AbstractAppController<T> {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @RequestMapping(value = "/read", method = RequestMethod.POST)
+    @PostMapping("/read")
     public Schema read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                        @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) throws IOException {
         T activationConfig = requireConfig(activationId);
-        U componentConfig = objectMapper.readValue(componentConfigJson, dynamicSchemaHandler.getDynamicSchemaPayloadClass(componentName));
-        return dynamicSchemaHandler.getSchema(activationConfig, componentName, componentConfig);
+        U componentConfig = objectMapper.readValue(componentConfigJson, dynamicSchemaHandler.getComponentConfigClass(componentName));
+        return dynamicSchemaHandler.getSchema(activationId, activationConfig, componentName, componentConfig);
     }
 
 }

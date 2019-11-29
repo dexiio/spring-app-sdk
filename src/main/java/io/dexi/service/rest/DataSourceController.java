@@ -6,6 +6,7 @@ import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.handlers.DataSourceHandler;
 import io.dexi.service.utils.JsonResultStream;
+import io.dexi.service.utils.JsonRowStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class DataSourceController<T, U> extends AbstractAppController<T> {
     @Autowired
     private JsonFactory jsonFactory;
 
-    @RequestMapping(value = "/read", method = RequestMethod.POST)
+    @PostMapping("/read")
     public void read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                        @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson,
@@ -35,7 +36,7 @@ public class DataSourceController<T, U> extends AbstractAppController<T> {
         T activationConfig = requireConfig(activationId);
         U componentConfig = objectMapper.convertValue(objectMapper.readTree(componentConfigJson), dataSourceHandler.getComponentConfigClass(componentName));
         try (final JsonResultStream resultStream = new JsonResultStream(jsonFactory, response.getOutputStream())) {
-            dataSourceHandler.read(activationConfig, componentName, componentConfig, resultStream);
+            dataSourceHandler.read(activationId, activationConfig, componentName, componentConfig, resultStream);
         }
     }
 

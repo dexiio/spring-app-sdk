@@ -21,20 +21,14 @@ public class ActivationController<T> {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @RequestMapping(value = "validate", method = RequestMethod.POST)
-    // Ensure HTTP 204/205 is returned for successful calls of this method to avoid client (okhttp) choking with
-    // "No content to map due to end-of-input" error attempting to parse the empty string as JSON.
-    // TODO: make more generic fix by sub-classing appropriate Jackson converter used by okhttp
+    @PostMapping("validate")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void validateActivation(@RequestBody ObjectNode activationConfigJson) throws ActivationException {
         T activationConfig = objectMapper.convertValue(activationConfigJson, activationHandler.getActivationConfigClass());
         activationHandler.<T>validate(activationConfig);
     }
 
-    @RequestMapping(value = "activate", method = RequestMethod.POST)
-    // Ensure HTTP 204/205 is returned for successful calls of this method to avoid client (okhttp) choking with
-    // "No content to map due to end-of-input" error attempting to parse the empty string as JSON.
-    // TODO: make more generic fix by sub-classing appropriate Jackson converter used by okhttp
+    @PostMapping("activate")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void activate(@RequestBody ObjectNode activationConfigJson,
                          @RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId) throws ActivationException {
@@ -42,10 +36,7 @@ public class ActivationController<T> {
         activationHandler.activate(activationId, activationConfig);
     }
 
-    @RequestMapping(value = "deactivate", method = RequestMethod.POST)
-    // Ensure HTTP 204/205 is returned for successful calls of this method to avoid client (okhttp) choking with
-    // "No content to map due to end-of-input" error attempting to parse the empty string as JSON.
-    // TODO: make more generic fix by sub-classing appropriate Jackson converter used by okhttp
+    @PostMapping("deactivate")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deactivate(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId) throws ActivationException {
         activationHandler.deactivate(activationId);

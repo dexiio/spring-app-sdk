@@ -32,7 +32,7 @@ public class DataStorageController<T, U> extends AbstractAppController<T> {
     @Autowired
     private JsonFactory jsonFactory;
 
-    @RequestMapping(value = "write", method = RequestMethod.POST)
+    @PostMapping("write")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void write(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                       @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,

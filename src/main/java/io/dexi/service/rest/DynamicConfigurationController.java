@@ -7,10 +7,7 @@ import io.dexi.service.Schema;
 import io.dexi.service.handlers.DynamicConfigurationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -26,13 +23,13 @@ public class DynamicConfigurationController<T, U> extends AbstractAppController<
     @Autowired
     private ObjectMapper objectMapper;
 
-    @RequestMapping(value = "/read", method = RequestMethod.POST)
+    @PostMapping("/read")
     public Schema read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                        @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                        @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson) throws URISyntaxException, IOException {
         T activationConfig = requireConfig(activationId);
-        U componentConfig = objectMapper.readValue(componentConfigJson, dynamicConfigurationHandler.getDynamicConfigurationPayloadClass(componentName));
-        return dynamicConfigurationHandler.getConfiguration(activationConfig, componentName, componentConfig);
+        U componentConfig = objectMapper.readValue(componentConfigJson, dynamicConfigurationHandler.getComponentConfigClass(componentName));
+        return dynamicConfigurationHandler.getConfiguration(activationId, activationConfig, componentName, componentConfig);
     }
 
 }

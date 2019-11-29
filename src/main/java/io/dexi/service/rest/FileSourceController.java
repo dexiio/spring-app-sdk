@@ -23,14 +23,14 @@ public class FileSourceController<T, U> extends AbstractAppController<T> {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @RequestMapping(value = "read", method = RequestMethod.POST)
+    @PostMapping("read")
     public void read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                      @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                      @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson,
                      HttpServletResponse response) throws IOException {
         T activationConfig = requireConfig(activationId);
-        U fileSourcePayload = objectMapper.readValue(componentConfigJson, fileSourceHandler.getComponentConfigClass(componentName));
-        fileSourceHandler.read(activationConfig, fileSourcePayload, response);
+        U componentConfig = objectMapper.readValue(componentConfigJson, fileSourceHandler.getComponentConfigClass(componentName));
+        fileSourceHandler.read(activationId, activationConfig, componentName, componentConfig, response);
     }
 
 }

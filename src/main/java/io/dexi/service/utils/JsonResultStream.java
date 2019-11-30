@@ -14,6 +14,8 @@ public class JsonResultStream implements ResultStream {
 
     private final JsonGenerator generator;
 
+    private String nextOffset;
+
     public JsonResultStream(JsonFactory jsonFactory, OutputStream stream) throws IOException {
         this.jsonFactory = jsonFactory;
         generator = this.jsonFactory.createGenerator(stream, JsonEncoding.UTF8);
@@ -21,15 +23,21 @@ public class JsonResultStream implements ResultStream {
         generator.writeArrayFieldStart("rows");
     }
 
+
+    @Override
+    public void setNextOffset(String nextOffset) {
+        this.nextOffset = nextOffset;
+    }
+
     @Override
     public void append(Map<String,Object> row) throws IOException {
         generator.writeObject(row);
-
     }
 
     @Override
     public void close() throws IOException {
         generator.writeEndArray();
+        generator.writeObjectField("nextOffset", nextOffset);
         generator.writeEndObject();
         generator.close();
     }

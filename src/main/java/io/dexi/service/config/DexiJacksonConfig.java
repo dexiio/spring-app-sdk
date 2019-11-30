@@ -21,7 +21,7 @@ public class DexiJacksonConfig {
     }
 
     @Bean
-    public JsonFactory jsonFactory() {
-        return new JsonFactory();
+    public JsonFactory jsonFactory(ObjectMapper objectMapper) {
+        return new JsonFactory(objectMapper);
     }
 }

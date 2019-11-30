@@ -20,7 +20,7 @@ public interface DataSourceHandler<T, U> {
      * @param batchSize the size of the batch to retrieve (limit)
      * @throws IOException if reading fails
      */
-    void read(AppContext<T,U> ctxt, int offset, int batchSize, ResultStream resultStream) throws IOException;
+    void read(AppContext<T,U> ctxt, String offset, int batchSize, ResultStream resultStream) throws IOException;
 
     /**
      * Get the component configuration class. Is used for (de)serialization

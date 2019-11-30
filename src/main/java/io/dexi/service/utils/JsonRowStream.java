@@ -17,7 +17,8 @@ import java.util.Map;
  *     "rows": [
  *          {"id": 1, ...},
  *          ...
- *     ]
+ *     ],
+ *     "nextOffset": 1234
  * }
  */
 public class JsonRowStream implements RowStream {
@@ -42,18 +43,21 @@ public class JsonRowStream implements RowStream {
      */
     private void readUntilRowStart() throws IOException {
         while(parser.nextToken() != JsonToken.START_ARRAY) {
-
+            //Do nothing
         }
+        parser.nextToken();
     }
 
     @Override
     public boolean hasNext() throws IOException {
-        return parser.nextToken() != JsonToken.END_ARRAY;
+        return parser.currentToken() == JsonToken.START_OBJECT;
     }
 
     @Override
     public Map<String,Object> next() throws IOException {
-        return objectMapper.readValue(parser, Map.class);
+        final Map<String,Object> out = objectMapper.readValue(parser, Map.class);
+        parser.nextToken();
+        return out;
     }
 
     @Override

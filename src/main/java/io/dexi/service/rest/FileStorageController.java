@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.handlers.AppContext;
+import io.dexi.service.handlers.ComponentConfigurationHandler;
 import io.dexi.service.handlers.FileStorageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -22,6 +23,9 @@ public class FileStorageController<T, U> extends AbstractAppController<T> {
     private FileStorageHandler<T, U> fileStorageHandler;
 
     @Autowired
+    private ComponentConfigurationHandler<T, U> componentConfigurationHandler;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @PostMapping("write")
@@ -31,7 +35,7 @@ public class FileStorageController<T, U> extends AbstractAppController<T> {
                       @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson,
                       HttpServletRequest request) throws IOException {
         T activationConfig = requireConfig(activationId);
-        U componentConfig = objectMapper.readValue(componentConfigJson, fileStorageHandler.getComponentConfigClass(componentName));
+        U componentConfig = objectMapper.readValue(componentConfigJson, componentConfigurationHandler.getComponentConfigClass(componentName));
         fileStorageHandler.write(new AppContext<>(activationId, activationConfig, componentName, componentConfig), request);
     }
 

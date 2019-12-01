@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.handlers.AppContext;
+import io.dexi.service.handlers.ComponentConfigurationHandler;
 import io.dexi.service.handlers.DataFilterHandler;
 import io.dexi.service.utils.JsonResultStream;
 import io.dexi.service.utils.JsonRowStream;
@@ -28,6 +29,9 @@ public class DataFilterController<T, U> extends AbstractAppController<T> {
     private DataFilterHandler<T, U> dataFilterHandler;
 
     @Autowired
+    private ComponentConfigurationHandler<T, U> componentConfigurationHandler;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
@@ -41,7 +45,7 @@ public class DataFilterController<T, U> extends AbstractAppController<T> {
                        HttpServletRequest request) throws IOException {
         T activationConfig = requireConfig(activationId);
 
-        U componentConfig = objectMapper.readValue(componentConfigJson, dataFilterHandler.getComponentConfigClass(componentName));
+        U componentConfig = objectMapper.readValue(componentConfigJson, componentConfigurationHandler.getComponentConfigClass(componentName));
         try (JsonRowStream rowStream = new JsonRowStream(jsonFactory, objectMapper, request.getInputStream())) {
             try (JsonResultStream resultStream = new JsonResultStream(jsonFactory, response.getOutputStream())) {
                 dataFilterHandler.filter(new AppContext<>(activationId, activationConfig, componentName, componentConfig), rowStream, resultStream);

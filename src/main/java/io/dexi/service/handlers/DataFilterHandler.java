@@ -20,12 +20,4 @@ public interface DataFilterHandler<T, U> {
      */
     void filter(AppContext<T,U> ctxt, RowStream inputs, ResultStream outputs);
 
-    /**
-     * Get the component configuration class. Is used for (de)serialization
-     *
-     * @param componentName the name of the component as defined in your dexi.yml
-     *
-     * @return the class itself (U)
-     */
-    Class<U> getComponentConfigClass(String componentName);
 }

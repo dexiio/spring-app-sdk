@@ -21,12 +21,4 @@ public interface FileStorageHandler<T, U> {
      */
     void write(AppContext<T,U> ctxt, HttpServletRequest request);
 
-    /**
-     * Get the component configuration class. Is used for (de)serialization
-     *
-     * @param componentName the name of the component as defined in your dexi.yml
-     *
-     * @return the class itself (U)
-     */
-    Class<U> getComponentConfigClass(String componentName);
 }

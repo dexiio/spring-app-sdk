@@ -1,5 +1,6 @@
 package io.dexi.service.handlers;
 
+import io.dexi.service.DynamicSchemaConfig;
 import io.dexi.service.Schema;
 
 /**
@@ -17,14 +18,6 @@ public interface DynamicSchemaHandler<T, U> {
      * @param ctxt Context information about the current activation and component configuration
      * @return the schema based on the configuration provided.
      */
-    Schema getSchema(AppContext<T,U> ctxt);
+    Schema getSchema(AppContext<T, DynamicSchemaConfig<U>> ctxt);
 
-    /**
-     * Get the component configuration class. Is used for (de)serialization
-     *
-     * @param componentName the name of the component as defined in your dexi.yml
-     *
-     * @return the class itself (U)
-     */
-    Class<? extends U> getComponentConfigClass(String componentName);
 }

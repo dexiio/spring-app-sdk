@@ -22,12 +22,4 @@ public interface DataSourceHandler<T, U> {
      */
     void read(AppContext<T,U> ctxt, String offset, int batchSize, ResultStream resultStream) throws IOException;
 
-    /**
-     * Get the component configuration class. Is used for (de)serialization
-     *
-     * @param componentName the name of the component as defined in your dexi.yml
-     *
-     * @return the class itself (U)
-     */
-    Class<U> getComponentConfigClass(String componentName);
 }

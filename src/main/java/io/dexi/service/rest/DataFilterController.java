@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
+import io.dexi.service.exceptions.NotFoundException;
 import io.dexi.service.handlers.AppContext;
-import io.dexi.service.handlers.ComponentConfigurationHandler;
 import io.dexi.service.handlers.DataFilterHandler;
 import io.dexi.service.utils.JsonResultStream;
 import io.dexi.service.utils.JsonRowStream;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @ConditionalOnBean(DataFilterHandler.class)
 @RestController
@@ -26,10 +27,7 @@ import java.io.IOException;
 public class DataFilterController<T, U> extends AbstractAppController<T> {
 
     @Autowired
-    private DataFilterHandler<T, U> dataFilterHandler;
-
-    @Autowired
-    private ComponentConfigurationHandler<T, U> componentConfigurationHandler;
+    private Map<String, DataFilterHandler<T, U>> dataFilterHandlers;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -43,9 +41,16 @@ public class DataFilterController<T, U> extends AbstractAppController<T> {
                        @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson,
                        HttpServletResponse response,
                        HttpServletRequest request) throws IOException {
+
+        final DataFilterHandler<T, U> dataFilterHandler = dataFilterHandlers.get(componentName);
+
+        if (dataFilterHandler == null) {
+            throw new NotFoundException("Filter handler not foudn for component: " + componentName);
+        }
+
         T activationConfig = requireConfig(activationId);
 
-        U componentConfig = objectMapper.readValue(componentConfigJson, componentConfigurationHandler.getComponentConfigClass(componentName));
+        U componentConfig = objectMapper.readValue(componentConfigJson, dataFilterHandler.getComponentConfigClass());
         try (JsonRowStream rowStream = new JsonRowStream(jsonFactory, objectMapper, request.getInputStream())) {
             try (JsonResultStream resultStream = new JsonResultStream(jsonFactory, response.getOutputStream())) {
                 dataFilterHandler.filter(new AppContext<>(activationId, activationConfig, componentName, componentConfig), rowStream, resultStream);

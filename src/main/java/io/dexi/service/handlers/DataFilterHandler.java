@@ -9,10 +9,12 @@ import io.dexi.service.utils.RowStream;
  * @param <T> the activation configuration DTO
  * @param <U> the component configuration DTO
  */
-public interface DataFilterHandler<T, U> {
+public interface DataFilterHandler<T, U> extends BaseComponentHandler<U> {
 
     /**
      * Method that is invoked for all data-filter components for belonging to this app.
+     *
+     * Will be exposed as POST /dexi/data/filter/invoke
      *
      * @param ctxt Context information about the current activation and component configuration
      * @param inputs a stream of inputs coming from dexi

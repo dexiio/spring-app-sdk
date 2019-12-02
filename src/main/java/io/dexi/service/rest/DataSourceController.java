@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
+import io.dexi.service.exceptions.NotFoundException;
 import io.dexi.service.handlers.AppContext;
-import io.dexi.service.handlers.ComponentConfigurationHandler;
 import io.dexi.service.handlers.DataSourceHandler;
 import io.dexi.service.utils.JsonResultStream;
 import org.apache.commons.lang.StringUtils;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @ConditionalOnBean(DataSourceHandler.class)
 @RestController
@@ -22,10 +23,7 @@ import java.io.IOException;
 public class DataSourceController<T, U> extends AbstractAppController<T> {
 
     @Autowired
-    private DataSourceHandler<T, U> dataSourceHandler;
-
-    @Autowired
-    private ComponentConfigurationHandler<T, U> componentConfigurationHandler;
+    private Map<String, DataSourceHandler<T, U>> dataSourceHandlers;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -45,8 +43,15 @@ public class DataSourceController<T, U> extends AbstractAppController<T> {
             offset = "";
         }
 
+
+        final DataSourceHandler<T, U> dataSourceHandler = dataSourceHandlers.get(componentName);
+
+        if (dataSourceHandler == null) {
+            throw new NotFoundException("Source handler not found for component: " + componentName);
+        }
+
         T activationConfig = requireConfig(activationId);
-        U componentConfig = objectMapper.convertValue(objectMapper.readTree(componentConfigJson), componentConfigurationHandler.getComponentConfigClass(componentName));
+        U componentConfig = objectMapper.convertValue(objectMapper.readTree(componentConfigJson), dataSourceHandler.getComponentConfigClass());
         try (final JsonResultStream resultStream = new JsonResultStream(jsonFactory, response.getOutputStream())) {
             dataSourceHandler.read(new AppContext<>(activationId, activationConfig, componentName, componentConfig), offset, limit, resultStream);
         }

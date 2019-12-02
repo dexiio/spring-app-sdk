@@ -1,11 +1,10 @@
 package io.dexi.service.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
+import io.dexi.service.exceptions.NotFoundException;
 import io.dexi.service.handlers.AppContext;
-import io.dexi.service.handlers.ComponentConfigurationHandler;
 import io.dexi.service.handlers.FileSourceHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @ConditionalOnBean(FileSourceHandler.class)
 @RestController
@@ -20,10 +20,7 @@ import java.io.IOException;
 public class FileSourceController<T, U> extends AbstractAppController<T> {
 
     @Autowired
-    private FileSourceHandler<T, U> fileSourceHandler;
-
-    @Autowired
-    private ComponentConfigurationHandler<T, U> componentConfigurationHandler;
+    private Map<String, FileSourceHandler<T, U>> fileSourceHandlers;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -33,8 +30,14 @@ public class FileSourceController<T, U> extends AbstractAppController<T> {
                      @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                      @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson,
                      HttpServletResponse response) throws IOException {
+
+        final FileSourceHandler<T, U> fileSourceHandler = fileSourceHandlers.get(componentName);
+        if (fileSourceHandler == null) {
+            throw new NotFoundException("File source handler not found for component: " + componentName);
+        }
+
         T activationConfig = requireConfig(activationId);
-        U componentConfig = objectMapper.readValue(componentConfigJson, componentConfigurationHandler.getComponentConfigClass(componentName));
+        U componentConfig = objectMapper.readValue(componentConfigJson, fileSourceHandler.getComponentConfigClass());
         fileSourceHandler.read(new AppContext<>(activationId, activationConfig, componentName, componentConfig), response);
     }
 

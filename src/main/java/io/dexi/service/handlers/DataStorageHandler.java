@@ -10,9 +10,11 @@ import java.io.IOException;
  * @param <T> the activation configuration DTO
  * @param <U> the component configuration DTO
  */
-public interface DataStorageHandler<T, U> {
+public interface DataStorageHandler<T, U>  extends BaseComponentHandler<U> {
     /**
      * Method that is invoked whenever a data-storage component is invoked from dexi
+     *
+     * Will be exposed as POST /dexi/data/storage/write
      *
      * @param ctxt Context information about the current activation and component configuration
      * @param rows stream of data rows.

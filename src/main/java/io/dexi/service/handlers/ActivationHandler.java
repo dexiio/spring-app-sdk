@@ -22,6 +22,8 @@ public interface ActivationHandler<T> {
      * Method that is invoked whenever a user validates a configuration. Happens before activation and whenever the user
      * clicks "Test configuration".
      *
+     * Will be exposed as POST /dexi/activations/validate
+     *
      * Note: Method implementation is required
      *
      * @param activationConfig the users configuration options
@@ -31,6 +33,8 @@ public interface ActivationHandler<T> {
 
     /**
      * Is invoked whenever a user activates the app. Is already validated ahead of the call through the validate method.
+     *
+     * Will be exposed as POST /dexi/activations/activate
      *
      * Note: Method is optional and can be left in it's default "do-nothing" state
      *
@@ -42,6 +46,8 @@ public interface ActivationHandler<T> {
 
     /**
      * Is invoked whenever a user deactivates the app.
+     *
+     * Will be exposed as POST /dexi/activations/deactivate
      *
      * Note: Method is optional and can be left in it's default "do-nothing" state
      *

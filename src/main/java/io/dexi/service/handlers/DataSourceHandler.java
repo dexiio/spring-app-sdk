@@ -10,9 +10,11 @@ import java.io.IOException;
  * @param <T> the activation configuration DTO
  * @param <U> the component configuration DTO
  */
-public interface DataSourceHandler<T, U> {
+public interface DataSourceHandler<T, U> extends BaseComponentHandler<U> {
     /**
      * Method that gets invoked whenever a data-source component is invoked from dexi.
+     *
+     * Will be exposed as POST /dexi/data/source/read
      *
      * @param ctxt Context information about the current activation and component configuration
      * @param resultStream object for writing results to. Provided to support streaming output

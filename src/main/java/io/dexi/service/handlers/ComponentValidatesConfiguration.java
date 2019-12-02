@@ -8,20 +8,15 @@ import io.dexi.service.exceptions.ComponentConfigurationException;
  * @param <T> the activation configuration DTO
  * @param <U> the component configuration DTO
  */
-public interface ComponentConfigurationHandler<T, U> {
+public interface ComponentValidatesConfiguration<T, U> extends BaseComponentHandler<U> {
     /**
      * Is invoked whenever the user uses a component and clicks "Test configuration" for a component.
+     *
+     * Will be exposed as POST /dexi/component/support/validate
      *
      * @param ctxt Context information about the current activation and component configuration
      * @throws ComponentConfigurationException throws exception if configuration is invalid
      */
     void validate(AppContext<T,U> ctxt) throws ComponentConfigurationException;
 
-    /**
-     * Returns class for component configuration DTO. Is used for (de)serialization
-     *
-     * @param componentName The name of the component as defined in your dexi.yml file
-     * @return the class itself (U)
-     */
-    Class<? extends U> getComponentConfigClass(String componentName);
 }

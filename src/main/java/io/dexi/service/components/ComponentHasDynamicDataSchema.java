@@ -1,7 +1,8 @@
-package io.dexi.service.handlers;
+package io.dexi.service.components;
 
 import io.dexi.service.DynamicSchemaConfig;
 import io.dexi.service.Schema;
+import io.dexi.service.AppContext;
 
 /**
  * Implement this to handle dynamic schemas (inputs / outputs) for components.
@@ -9,7 +10,7 @@ import io.dexi.service.Schema;
  * @param <T> the activation configuration DTO
  * @param <U> the dynamic schema payload DTO
  */
-public interface ComponentHasDynamicDataSchema<T, U> extends BaseComponentHandler<U> {
+public interface ComponentHasDynamicDataSchema<T, U> extends BaseAppComponent<U> {
     /**
      * Method that gets invoked whenever the schema for a component (input / output) is needed. Returns
      * a JSON schema-like structure which is used within dexi. Implementing this will allow for dynamic

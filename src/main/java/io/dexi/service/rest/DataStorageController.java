@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.exceptions.NotFoundException;
-import io.dexi.service.handlers.AppContext;
-import io.dexi.service.handlers.DataStorageHandler;
+import io.dexi.service.AppContext;
+import io.dexi.service.components.DataStorageAppComponent;
 import io.dexi.service.utils.JsonRowStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Map;
 
-@ConditionalOnBean(DataStorageHandler.class)
+@ConditionalOnBean(DataStorageAppComponent.class)
 @RestController
 @RequestMapping("/dexi/data/storage/")
 public class DataStorageController<T, U> extends AbstractAppController<T> {
@@ -26,7 +26,7 @@ public class DataStorageController<T, U> extends AbstractAppController<T> {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private Map<String, DataStorageHandler<T, U>> dataStorageHandlers;
+    private Map<String, DataStorageAppComponent<T, U>> dataStorageHandlers;
 
     @Autowired
     private JsonFactory jsonFactory;
@@ -39,7 +39,7 @@ public class DataStorageController<T, U> extends AbstractAppController<T> {
                       HttpServletRequest request) throws IOException {
 
 
-        final DataStorageHandler<T, U> dataStorageHandler = dataStorageHandlers.get(componentName);
+        final DataStorageAppComponent<T, U> dataStorageHandler = dataStorageHandlers.get(componentName);
 
         if (dataStorageHandler == null) {
             throw new NotFoundException("Storage handler not found for component: " + componentName);

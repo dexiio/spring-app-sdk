@@ -1,4 +1,4 @@
-package io.dexi.service.handlers;
+package io.dexi.service.components;
 
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.lang.annotation.*;
 
 /**
- * Put this annotation on all your component handlers. This will enable Spring to automatically detect and wire them up
+ * Put this annotation on all your component implementations. This will enable Spring to automatically detect and wire them up
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

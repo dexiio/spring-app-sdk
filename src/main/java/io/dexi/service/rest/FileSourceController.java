@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.exceptions.NotFoundException;
-import io.dexi.service.handlers.AppContext;
-import io.dexi.service.handlers.FileSourceHandler;
+import io.dexi.service.AppContext;
+import io.dexi.service.components.FileSourceAppComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-@ConditionalOnBean(FileSourceHandler.class)
+@ConditionalOnBean(FileSourceAppComponent.class)
 @RestController
 @RequestMapping("/dexi/file/source/")
 public class FileSourceController<T, U> extends AbstractAppController<T> {
 
     @Autowired
-    private Map<String, FileSourceHandler<T, U>> fileSourceHandlers;
+    private Map<String, FileSourceAppComponent<T, U>> fileSourceHandlers;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -31,7 +31,7 @@ public class FileSourceController<T, U> extends AbstractAppController<T> {
                      @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson,
                      HttpServletResponse response) throws IOException {
 
-        final FileSourceHandler<T, U> fileSourceHandler = fileSourceHandlers.get(componentName);
+        final FileSourceAppComponent<T, U> fileSourceHandler = fileSourceHandlers.get(componentName);
         if (fileSourceHandler == null) {
             throw new NotFoundException("File source handler not found for component: " + componentName);
         }

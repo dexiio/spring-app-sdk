@@ -1,6 +1,7 @@
-package io.dexi.service.handlers;
+package io.dexi.service.components;
 
 import io.dexi.service.exceptions.ComponentConfigurationException;
+import io.dexi.service.AppContext;
 
 /**
  * Implement this to validate component configuration for a given activation.
@@ -8,7 +9,7 @@ import io.dexi.service.exceptions.ComponentConfigurationException;
  * @param <T> the activation configuration DTO
  * @param <U> the component configuration DTO
  */
-public interface ComponentValidatesConfiguration<T, U> extends BaseComponentHandler<U> {
+public interface ComponentValidatesConfiguration<T, U> extends BaseAppComponent<U> {
     /**
      * Is invoked whenever the user uses a component and clicks "Test configuration" for a component.
      *

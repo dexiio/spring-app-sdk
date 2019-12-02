@@ -1,10 +1,10 @@
-package io.dexi.service.handlers;
+package io.dexi.service.components;
 
 /**
  * Base interface for all component type interfaces
  * @param <U>
  */
-public interface BaseComponentHandler<U> {
+public interface BaseAppComponent<U> {
 
     /**
      * Returns class for component configuration DTO. Is used for (de)serialization

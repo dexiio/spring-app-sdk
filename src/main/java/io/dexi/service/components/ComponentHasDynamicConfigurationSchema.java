@@ -1,8 +1,7 @@
-package io.dexi.service.handlers;
+package io.dexi.service.components;
 
 import io.dexi.service.Schema;
-
-import java.net.URISyntaxException;
+import io.dexi.service.AppContext;
 
 /**
  * Implement this to handle dynamic configuration for components
@@ -10,7 +9,7 @@ import java.net.URISyntaxException;
  * @param <T> the activation configuration DTO
  * @param <U> the component configuration DTO
  */
-public interface ComponentHasDynamicConfigurationSchema<T, U> extends BaseComponentHandler<U> {
+public interface ComponentHasDynamicConfigurationSchema<T, U> extends BaseAppComponent<U> {
     /**
      * Method that is invoked whenver configuration is refreshed. Is used to return a new field schema
      * to dexi for supporting dynamic configuration forms.

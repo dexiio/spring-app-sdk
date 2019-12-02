@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.exceptions.NotFoundException;
-import io.dexi.service.handlers.AppContext;
-import io.dexi.service.handlers.FileStorageHandler;
+import io.dexi.service.AppContext;
+import io.dexi.service.components.FileStorageAppComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.http.HttpStatus;
@@ -15,13 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Map;
 
-@ConditionalOnBean(FileStorageHandler.class)
+@ConditionalOnBean(FileStorageAppComponent.class)
 @RestController
 @RequestMapping("/dexi/file/storage/")
 public class FileStorageController<T, U> extends AbstractAppController<T> {
 
     @Autowired
-    private Map<String, FileStorageHandler<T, U>> fileStorageHandlers;
+    private Map<String, FileStorageAppComponent<T, U>> fileStorageHandlers;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -33,7 +33,7 @@ public class FileStorageController<T, U> extends AbstractAppController<T> {
                       @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson,
                       HttpServletRequest request) throws IOException {
 
-        final FileStorageHandler<T, U> fileStorageHandler = fileStorageHandlers.get(componentName);
+        final FileStorageAppComponent<T, U> fileStorageHandler = fileStorageHandlers.get(componentName);
         if (fileStorageHandler == null) {
             throw new NotFoundException("File storage handler not found for component: " + componentName);
         }

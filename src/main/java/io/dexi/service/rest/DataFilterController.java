@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.exceptions.NotFoundException;
-import io.dexi.service.handlers.AppContext;
-import io.dexi.service.handlers.DataFilterHandler;
+import io.dexi.service.AppContext;
+import io.dexi.service.components.DataFilterAppComponent;
 import io.dexi.service.utils.JsonResultStream;
 import io.dexi.service.utils.JsonRowStream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-@ConditionalOnBean(DataFilterHandler.class)
+@ConditionalOnBean(DataFilterAppComponent.class)
 @RestController
 @RequestMapping("/dexi/data/filter/")
 public class DataFilterController<T, U> extends AbstractAppController<T> {
 
     @Autowired
-    private Map<String, DataFilterHandler<T, U>> dataFilterHandlers;
+    private Map<String, DataFilterAppComponent<T, U>> dataFilterHandlers;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -42,7 +42,7 @@ public class DataFilterController<T, U> extends AbstractAppController<T> {
                        HttpServletResponse response,
                        HttpServletRequest request) throws IOException {
 
-        final DataFilterHandler<T, U> dataFilterHandler = dataFilterHandlers.get(componentName);
+        final DataFilterAppComponent<T, U> dataFilterHandler = dataFilterHandlers.get(componentName);
 
         if (dataFilterHandler == null) {
             throw new NotFoundException("Filter handler not foudn for component: " + componentName);

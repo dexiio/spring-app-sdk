@@ -1,14 +1,16 @@
-package io.dexi.service.handlers;
+package io.dexi.service.components;
+
+import io.dexi.service.AppContext;
 
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Implement this handler to handle file-source components.
+ * Interface for the "file-source" component type
  *
  * @param <T> the activation configuration DTO
  * @param <U> the component configuration DTO
  */
-public interface FileSourceHandler<T, U> extends BaseComponentHandler<U> {
+public interface FileSourceAppComponent<T, U> extends BaseAppComponent<U> {
     /**
      * This method is invoked whenever a file-source component is asked to read a file.
      * File content must be written to the HttpServletResponse - and ideally also include the content type and

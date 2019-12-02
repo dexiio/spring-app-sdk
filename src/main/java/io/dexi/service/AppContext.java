@@ -1,4 +1,4 @@
-package io.dexi.service.handlers;
+package io.dexi.service;
 
 public class AppContext<T,U> {
 

@@ -1,14 +1,16 @@
-package io.dexi.service.handlers;
+package io.dexi.service.components;
+
+import io.dexi.service.AppContext;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Implement this handler to handle file-storage components.
+ * Interface for the "file-storage" component type
  *
  * @param <T> the activation configuration DTO
  * @param <U> the component configuration DTO
  */
-public interface FileStorageHandler<T, U> extends BaseComponentHandler<U> {
+public interface FileStorageAppComponent<T, U> extends BaseAppComponent<U> {
 
     /**
      * Method that is invoked whenever a file-storage component is asked to store a file.

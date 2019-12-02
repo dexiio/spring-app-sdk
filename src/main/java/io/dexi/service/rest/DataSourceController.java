@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.exceptions.NotFoundException;
-import io.dexi.service.handlers.AppContext;
-import io.dexi.service.handlers.DataSourceHandler;
+import io.dexi.service.AppContext;
+import io.dexi.service.components.DataSourceAppComponent;
 import io.dexi.service.utils.JsonResultStream;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-@ConditionalOnBean(DataSourceHandler.class)
+@ConditionalOnBean(DataSourceAppComponent.class)
 @RestController
 @RequestMapping("/dexi/data/source")
 public class DataSourceController<T, U> extends AbstractAppController<T> {
 
     @Autowired
-    private Map<String, DataSourceHandler<T, U>> dataSourceHandlers;
+    private Map<String, DataSourceAppComponent<T, U>> dataSourceHandlers;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -44,7 +44,7 @@ public class DataSourceController<T, U> extends AbstractAppController<T> {
         }
 
 
-        final DataSourceHandler<T, U> dataSourceHandler = dataSourceHandlers.get(componentName);
+        final DataSourceAppComponent<T, U> dataSourceHandler = dataSourceHandlers.get(componentName);
 
         if (dataSourceHandler == null) {
             throw new NotFoundException("Source handler not found for component: " + componentName);

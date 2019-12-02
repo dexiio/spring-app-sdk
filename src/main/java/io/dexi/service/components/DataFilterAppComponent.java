@@ -1,15 +1,16 @@
-package io.dexi.service.handlers;
+package io.dexi.service.components;
 
+import io.dexi.service.AppContext;
 import io.dexi.service.utils.ResultStream;
 import io.dexi.service.utils.RowStream;
 
 /**
- * Implement this handler to handle data-filter components.
+ * Interface for the "data-filter" component type
  *
  * @param <T> the activation configuration DTO
  * @param <U> the component configuration DTO
  */
-public interface DataFilterHandler<T, U> extends BaseComponentHandler<U> {
+public interface DataFilterAppComponent<T, U> extends BaseAppComponent<U> {
 
     /**
      * Method that is invoked for all data-filter components for belonging to this app.

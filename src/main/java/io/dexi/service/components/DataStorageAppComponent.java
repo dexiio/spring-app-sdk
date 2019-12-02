@@ -1,16 +1,17 @@
-package io.dexi.service.handlers;
+package io.dexi.service.components;
 
+import io.dexi.service.AppContext;
 import io.dexi.service.utils.RowStream;
 
 import java.io.IOException;
 
 /**
- * Implement this handler to handler data-storage components.
+ * Interface for the "data-storage" component type
  *
  * @param <T> the activation configuration DTO
  * @param <U> the component configuration DTO
  */
-public interface DataStorageHandler<T, U>  extends BaseComponentHandler<U> {
+public interface DataStorageAppComponent<T, U>  extends BaseAppComponent<U> {
     /**
      * Method that is invoked whenever a data-storage component is invoked from dexi
      *

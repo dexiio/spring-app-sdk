@@ -3,16 +3,18 @@ package io.dexi.service.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.dexi.client.DexiAuth;
-import io.dexi.service.exceptions.ComponentConfigurationException;
-import io.dexi.service.exceptions.NotFoundException;
 import io.dexi.service.AppContext;
 import io.dexi.service.components.ComponentValidatesConfiguration;
+import io.dexi.service.exceptions.ComponentConfigurationException;
+import io.dexi.service.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@ConditionalOnBean(ComponentValidatesConfiguration.class)
 @RestController
 @RequestMapping("/dexi/component/support/")
 public class ComponentSupportController<T, U> extends AbstractAppController<T> {

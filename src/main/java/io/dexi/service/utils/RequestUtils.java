@@ -12,11 +12,11 @@ public class RequestUtils {
 
     public static RequestBody createStreamingBody(HttpServletRequest request) throws IOException {
         final MediaType mediaType = MediaType.parse(request.getContentType());
-        return new StreamingRequestBody(mediaType, request.getInputStream());
+        return new StreamingRequestBody(mediaType, request.getInputStream(), request.getContentLength());
     }
 
     public static MultipartBody.Part createStreamingPart(HttpServletRequest request) throws IOException {
         final MediaType mediaType = MediaType.parse(request.getContentType());
-        return MultipartBody.Part.create(new StreamingRequestBody(mediaType, request.getInputStream()));
+        return MultipartBody.Part.create(new StreamingRequestBody(mediaType, request.getInputStream(), request.getContentLength()));
     }
 }

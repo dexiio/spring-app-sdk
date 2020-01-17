@@ -10,12 +10,12 @@ import java.io.IOException;
 
 public class RequestUtils {
 
-    public RequestBody createStreamingBody(HttpServletRequest request) throws IOException {
+    public static RequestBody createStreamingBody(HttpServletRequest request) throws IOException {
         final MediaType mediaType = MediaType.parse(request.getContentType());
         return new StreamingRequestBody(mediaType, request.getInputStream());
     }
 
-    public MultipartBody.Part createStreamingPart(HttpServletRequest request) throws IOException {
+    public static MultipartBody.Part createStreamingPart(HttpServletRequest request) throws IOException {
         final MediaType mediaType = MediaType.parse(request.getContentType());
         return MultipartBody.Part.create(new StreamingRequestBody(mediaType, request.getInputStream()));
     }

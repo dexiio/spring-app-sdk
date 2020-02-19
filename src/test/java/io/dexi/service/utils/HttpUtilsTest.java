@@ -52,8 +52,9 @@ public class HttpUtilsTest {
         ByteArrayInputStream input = new ByteArrayInputStream(content);
         AtomicInteger counter = new AtomicInteger();
 
+        long read = 0;
         try {
-            HttpUtils.readInputChunks(input, KB, chunk -> {
+            read = HttpUtils.readInputChunks(input, KB, chunk -> {
                 counter.getAndIncrement();
                 throw new IOException("Failed!");
             });
@@ -61,6 +62,8 @@ public class HttpUtilsTest {
         } catch (IOException ex) {
 
         }
+
+        assertEquals(0, read);
         assertEquals(1, counter.get());
     }
 

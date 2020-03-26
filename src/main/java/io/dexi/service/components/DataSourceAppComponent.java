@@ -18,9 +18,9 @@ public interface DataSourceAppComponent<T, U> extends BaseAppComponent<U> {
      * Will be exposed as POST /dexi/data/source/read
      *
      * @param ctxt Context information about the current activation and component configuration
-     * @param resultStream object for writing results to. Provided to support streaming output
      * @param offset The offset for this result set. We read rows in batches to avoid long-running connections.
      * @param batchSize the size of the batch to retrieve (limit)
+     * @param resultStream object for writing results to. Provided to support streaming output
      * @throws IOException if reading fails
      */
     void read(AppContext<T,U> ctxt, String offset, int batchSize, ResultStream resultStream) throws IOException;

@@ -23,6 +23,6 @@ public interface FileStorageAppComponent<T, U> extends BaseAppComponent<U> {
      * @param ctxt Context information about the current activation and component configuration
      * @param request the raw HTTP request - to read the file content and headers from
      */
-    void write(AppContext<T,U> ctxt, HttpServletRequest request);
+    String write(AppContext<T, U> ctxt, HttpServletRequest request);
 
 }

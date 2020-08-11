@@ -9,11 +9,15 @@ import io.dexi.service.components.FileStorageAppComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
+
+import static org.apache.commons.lang.CharEncoding.UTF_8;
 
 @ConditionalOnBean(FileStorageAppComponent.class)
 @RestController
@@ -31,7 +35,7 @@ public class FileStorageController<T, U> extends AbstractAppController<T> {
     public void write(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
                       @RequestHeader(DexiAuth.HEADER_COMPONENT) String componentName,
                       @RequestHeader(DexiPayloadHeaders.CONFIGURATION) String componentConfigJson,
-                      HttpServletRequest request) throws IOException {
+                      HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         final FileStorageAppComponent<T, U> fileStorageHandler = fileStorageHandlers.get(componentName);
         if (fileStorageHandler == null) {
@@ -40,7 +44,20 @@ public class FileStorageController<T, U> extends AbstractAppController<T> {
 
         T activationConfig = requireConfig(activationId);
         U componentConfig = objectMapper.readValue(componentConfigJson, fileStorageHandler.getComponentConfigClass());
-        fileStorageHandler.write(new AppContext<>(activationId, activationConfig, componentName, componentConfig), request);
+
+        String savedFileUri = fileStorageHandler.write(new AppContext<>(activationId, activationConfig, componentName, componentConfig), request);
+
+        fileUriResponse(savedFileUri, response);
+
+    }
+
+    private void fileUriResponse(String fileUri, HttpServletResponse response) throws IOException {
+
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(UTF_8);
+
+        response.getWriter().write(String.valueOf(objectMapper.createObjectNode().put("uri", fileUri)));
+        response.flushBuffer();
     }
 
 }

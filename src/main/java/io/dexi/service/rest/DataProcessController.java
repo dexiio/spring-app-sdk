@@ -1,15 +1,11 @@
 package io.dexi.service.rest;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dexi.client.DexiAuth;
 import io.dexi.service.AppContext;
 import io.dexi.service.DexiPayloadHeaders;
 import io.dexi.service.components.DataProcessAppComponent;
-import io.dexi.service.components.DataSourceAppComponent;
 import io.dexi.service.exceptions.NotFoundException;
-import io.dexi.service.utils.JsonResultStream;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +25,6 @@ public class DataProcessController<T, U> extends AbstractAppController<T> {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private JsonFactory jsonFactory;
 
     @PostMapping("/process")
     public void read(@RequestHeader(DexiAuth.HEADER_ACTIVATION) String activationId,
